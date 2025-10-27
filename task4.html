@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Colorful To-Do App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fceabb, #f8b500);
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .container {
+      background: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      width: 420px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ff6f61;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 6px 0;
+      width: 100%;
+      font-size: 1em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #ff6f61;
+      outline: none;
+      box-shadow: 0 0 5px #ff6f61;
+    }
+
+    button {
+      background: #ff6f61;
+      color: white;
+      font-weight: bold;
+      border: none;
+    }
+
+    button:hover {
+      background: #e85c50;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f9f9f9;
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 10px;
+      position: relative;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: #999;
+    }
+
+    .actions {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .actions button {
+      font-size: 0.9em;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .actions button:nth-child(1) {
+      background: #4caf50;
+      color: white;
+    }
+
+    .actions button:nth-child(2) {
+      background: #2196f3;
+      color: white;
+    }
+
+    .actions button:nth-child(3) {
+      background: #f44336;
+      color: white;
+    }
+
+    .actions button:hover {
+      opacity: 0.9;
+    }
+
+    .datetime {
+      font-size: 0.85em;
+      color: #555;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🌟 My Colorful To-Do List</h2>
+    <input type="text" id="taskInput" placeholder="Enter task..." />
+    <input type="datetime-local" id="taskTime" />
+    <button onclick="addTask()">Add Task</button>
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+    const taskInput = document.getElementById('taskInput');
+    const taskTime = document.getElementById('taskTime');
+    const taskList = document.getElementById('taskList');
+
+    function addTask() {
+      const text = taskInput.value.trim();
+      const time = taskTime.value;
+      if (!text) return;
+
+      const li = document.createElement('li');
+      const span = document.createElement('span');
+      span.textContent = text;
+
+      const datetime = document.createElement('div');
+      datetime.className = 'datetime';
+      datetime.textContent = time ? ` ${new Date(time).toLocaleString()}` : '';
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+
+      const completeBtn = document.createElement('button');
+      completeBtn.textContent = ' Done';
+      completeBtn.onclick = () => {
+        span.classList.toggle('completed');
+      };
+
+      const editBtn = document.createElement('button');
+      editBtn.textContent = 'Edit';
+      editBtn.onclick = () => {
+        const newText = prompt('Edit task:', span.textContent);
+        if (newText !== null) span.textContent = newText.trim();
+      };
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = ' Delete';
+      deleteBtn.onclick = () => {
+        taskList.removeChild(li);
+      };
+
+      actions.append(completeBtn, editBtn, deleteBtn);
+      li.append(span, datetime, actions);
+      taskList.appendChild(li);
+
+      taskInput.value = '';
+      taskTime.value = '';
+    }
+  </script>
+</body>
+</html>
